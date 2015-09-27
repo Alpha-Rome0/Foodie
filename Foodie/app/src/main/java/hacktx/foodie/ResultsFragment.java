@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import org.json.JSONObject;
 
 /**
  * Created by Andy on 9/27/2015.
@@ -40,7 +41,7 @@ public class ResultsFragment extends Fragment {
     public class BackgroundTask extends AsyncTask {
         protected Object doInBackground(Object[] params) {
             try {
-                String test = yelp.searchForBusinessesByLocation("pizza", "austin");
+                JSONObject json=new JSONObject(yelp.searchForBusinessesByLocation("pizza", "austin"));
             }catch(Exception e){
                 Log.e("Background task error", "Error ", e);
             }
