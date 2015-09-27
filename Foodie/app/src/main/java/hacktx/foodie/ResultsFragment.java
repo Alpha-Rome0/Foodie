@@ -64,14 +64,9 @@ public class ResultsFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                JSONObject json=new JSONObject(yelp.searchForBusinessesByLocation("pizza", "austin"));
-
-                String country = " ";
                 JSONObject jObj = new JSONObject(yelp.searchForBusinessesByLocation("pizza", "austin"));
-
                 JSONArray jArray = jObj.getJSONArray("businesses");
-
-
+                
                 for(int j=0; j <jArray.length(); j++) {
                     JSONObject sys = jArray.getJSONObject(j);
                     locations.add(sys.getString("snippet_text"));
