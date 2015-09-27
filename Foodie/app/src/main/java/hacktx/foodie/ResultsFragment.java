@@ -9,24 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-<<<<<<< HEAD
 import org.json.JSONObject;
-=======
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.TextView;
-import com.google.common.base.Splitter.MapSplitter;
 
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.xml.transform.Result;
 import java.util.ArrayList;
 import java.util.Map;
 
 
-
->>>>>>> 39597e3627432d775d8fd0356d2f3864bc2b70f0
 
 /**
  * Created by Andy on 9/27/2015.
@@ -36,6 +32,7 @@ public class ResultsFragment extends Fragment {
     private YelpAPI yelp;
     ArrayList<String> locations=new ArrayList<>();
     ArrayAdapter<String> adapter;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +50,6 @@ public class ResultsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 new BackgroundTask().execute();
-                adapter.notifyDataSetChanged();
             }
         });
 
@@ -64,12 +60,11 @@ public class ResultsFragment extends Fragment {
         return rootView;
     }
 
-    public class BackgroundTask extends AsyncTask {
-        protected Object doInBackground(Object[] params) {
+    public class BackgroundTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
             try {
-<<<<<<< HEAD
                 JSONObject json=new JSONObject(yelp.searchForBusinessesByLocation("pizza", "austin"));
-=======
 
                 String country = " ";
                 JSONObject jObj = new JSONObject(yelp.searchForBusinessesByLocation("pizza", "austin"));
@@ -83,23 +78,22 @@ public class ResultsFragment extends Fragment {
                     //country += "  " + sys.getString("location");
                 }
 
-
-
-
-
-               // Toast.makeText(this, country, Toast.LENGTH_LONG).show();
+                // Toast.makeText(this, country, Toast.LENGTH_LONG).show();
 
                 //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, country, );
 
 
 
-
->>>>>>> 39597e3627432d775d8fd0356d2f3864bc2b70f0
             }catch(Exception e){
                 Log.e("Background task error", "Error ", e);
             }
             return null;
         }
+        @Override
+        protected void onPostExecute(Void v) {
+            adapter.notifyDataSetChanged();
+        }
+
 
     }
 
