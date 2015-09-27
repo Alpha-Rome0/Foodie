@@ -7,7 +7,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
+import android.widget.TextView;
+import com.google.common.base.Splitter.MapSplitter;
+
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+
+
 
 /**
  * Created by Andy on 9/27/2015.
@@ -15,6 +30,8 @@ import android.widget.Button;
 public class ResultsFragment extends Fragment {
     private Button pizzabutton;
     private YelpAPI yelp;
+    ArrayList<String> locations=new ArrayList<>();
+    ArrayAdapter<String> adapter;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,15 +49,44 @@ public class ResultsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 new BackgroundTask().execute();
+                adapter.notifyDataSetChanged();
             }
         });
+
+        locations.add("testing");
+        adapter=new ArrayAdapter<String>(getActivity(), R.layout.list_item, R.id.list_item_textview,locations);
+        ListView listView=(ListView) rootView.findViewById(R.id.restaurants);
+        listView.setAdapter(adapter);
         return rootView;
     }
 
     public class BackgroundTask extends AsyncTask {
         protected Object doInBackground(Object[] params) {
             try {
-                String test = yelp.searchForBusinessesByLocation("pizza", "austin");
+
+                String country = " ";
+                JSONObject jObj = new JSONObject(yelp.searchForBusinessesByLocation("pizza", "austin"));
+
+                JSONArray jArray = jObj.getJSONArray("businesses");
+
+
+                for(int j=0; j <jArray.length(); j++) {
+                    JSONObject sys = jArray.getJSONObject(j);
+                    locations.add(sys.getString("snippet_text"));
+                    //country += "  " + sys.getString("location");
+                }
+
+
+
+
+
+               // Toast.makeText(this, country, Toast.LENGTH_LONG).show();
+
+                //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, country, );
+
+
+
+
             }catch(Exception e){
                 Log.e("Background task error", "Error ", e);
             }
@@ -48,5 +94,6 @@ public class ResultsFragment extends Fragment {
         }
 
     }
+
 
 }
